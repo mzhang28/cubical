@@ -25,7 +25,7 @@ open Iso
 
 private
   variable
-    ℓ ℓ' : Level
+    ℓ ℓ' ℓ'' : Level
 
 record IsLeftModule (R : Ring ℓ) {M : Type ℓ'}
   (0m : M)
@@ -105,9 +105,9 @@ module _ {R : Ring ℓ} where
     makeIsLeftModule .IsLeftModule.⋆DistL+ = ⋆DistL+
     makeIsLeftModule .IsLeftModule.⋆IdL = ⋆IdL
 
-record IsLeftModuleHom {R : Ring ℓ} {A B : Type ℓ'}
+record IsLeftModuleHom {R : Ring ℓ} {A : Type ℓ'} {B : Type ℓ''}
   (M : LeftModuleStr R A) (f : A → B) (N : LeftModuleStr R B)
-  : Type (ℓ-max ℓ ℓ')
+  : Type (ℓ-max ℓ (ℓ-max ℓ' ℓ''))
   where
 
   -- Shorter qualified names
@@ -124,12 +124,12 @@ record IsLeftModuleHom {R : Ring ℓ} {A B : Type ℓ'}
 LeftModuleHom : {R : Ring ℓ} (M N : LeftModule R ℓ') → Type (ℓ-max ℓ ℓ')
 LeftModuleHom M N = Σ[ f ∈ (⟨ M ⟩ → ⟨ N ⟩) ] IsLeftModuleHom (M .snd) f (N .snd)
 
-IsLeftModuleEquiv : {R : Ring ℓ} {A B : Type ℓ'}
+IsLeftModuleEquiv : {R : Ring ℓ} {A : Type ℓ'} {B : Type ℓ''}
   (M : LeftModuleStr R A) (e : A ≃ B) (N : LeftModuleStr R B)
-  → Type (ℓ-max ℓ ℓ')
+  → Type (ℓ-max ℓ (ℓ-max ℓ' ℓ''))
 IsLeftModuleEquiv M e N = IsLeftModuleHom M (e .fst) N
 
-LeftModuleEquiv : {R : Ring ℓ} (M N : LeftModule R ℓ') → Type (ℓ-max ℓ ℓ')
+LeftModuleEquiv : {R : Ring ℓ} (M : LeftModule R ℓ') (N : LeftModule R ℓ'') → Type (ℓ-max ℓ (ℓ-max ℓ' ℓ''))
 LeftModuleEquiv M N = Σ[ e ∈ ⟨ M ⟩ ≃ ⟨ N ⟩ ] IsLeftModuleEquiv (M .snd) e (N .snd)
 
 isPropIsLeftModule : (R : Ring ℓ) {M : Type ℓ'}
